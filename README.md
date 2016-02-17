@@ -1,4 +1,20 @@
-# docker-app-no-database
+# Example using Galera Cluster with MarianDB
+
+We using image https://github.com/hauptmedia/docker-mariadb have dockerfile located at : https://hub.docker.com/r/hauptmedia/mariadb/~/dockerfile/
+
+#test
+
+docker exec -ti node1 mysql -e 'show status like "wsrep_cluster_size"'
+#Diffirent between Standard mysql and galera Cluster
+
+http://galeracluster.com/documentation-webpages/limitations.html
+#Read more
+
+http://planet.mysql.com/entry/?id=5989966
+
+
+# Normal setup for Application.
+
 
 RUN nginx proxy
 

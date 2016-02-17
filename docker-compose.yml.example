@@ -3,6 +3,42 @@ web:
   restart: always
   volumes:
     - .:/srv/www
-    - /var/run/mysqld:/var/run/mysqld:ro
   environment:
-     VIRTUAL_HOST: docker.tuelinh.vn 
+     VIRTUAL_HOST: docker2.tuelinh.vn 
+  links:
+    - node1:mysql
+node1:
+    image: hauptmedia/mariadb:10.1
+    hostname: node1
+    environment:
+      - MYSQL_ROOT_PASSWORD=tieungao
+      - REPLICATION_PASSWORD=tieungao
+      - GALERA=On
+      - NODE_NAME=node1
+      - CLUSTER_NAME=maria_cluster
+      - CLUSTER_ADDRESS=gcomm://
+    command: --wsrep-new-cluster
+
+node2:
+    image: hauptmedia/mariadb:10.1
+    hostname: node2
+    links:
+      - node1
+    environment:
+      - REPLICATION_PASSWORD=tieungao
+      - GALERA=On
+      - NODE_NAME=node2
+      - CLUSTER_NAME=maria_cluster
+      - CLUSTER_ADDRESS=gcomm://node1
+
+node3:
+    image: hauptmedia/mariadb:10.1
+    hostname: node3
+    links:
+      - node1
+    environment:
+      - REPLICATION_PASSWORD=tieungao
+      - GALERA=On
+      - NODE_NAME=node3
+      - CLUSTER_NAME=maria_cluster
+      - CLUSTER_ADDRESS=gcomm://node1
